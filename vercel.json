@@ -1,8 +1,5 @@
 {
   "version": 2,
   "builds": [{ "src": "app.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/" }],
-  "dev": {
-    "port": 3001
-  }
+  "routes": [{ "src": "/(.*)", "dest": "/" }]
 }

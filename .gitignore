@@ -1,0 +1,52 @@
+# React
+node_modules/
+build/
+dist/
+.env
+npm-debug.log*
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Static analysis
+.cache
+coverage
+
+# Test
+coverage/
+.nyc_output/
+cypress/screenshots
+cypress/videos
+
+# Miscellaneous
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment variable files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# IDE specific
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace

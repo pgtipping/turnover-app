@@ -1,0 +1,15 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+header, section, footer {
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #0056b3;
+}
+
+/* Further style your page according to your branding and preference */

@@ -397,7 +397,7 @@ $(document).ready(function () {
     startMonthIndex,
     endMonthIndex
   ) {
-    // Ensure previous chart instance is cleared if exists
+    // Ensure previous chart instance is cleared if it exists
     if (window.turnoverChart instanceof Chart) {
       window.turnoverChart.destroy();
     }

@@ -24,6 +24,7 @@ cypress/videos
 .idea/
 *.sublime-project
 *.sublime-workspace
+.vercel/
 
 # Environment variable files
 .env.local
@@ -31,6 +32,7 @@ cypress/videos
 .env.test.local
 .env.production.local
 .env.production
+
 # Optional npm cache directory
 .npm
 

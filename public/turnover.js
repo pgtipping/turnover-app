@@ -1,3 +1,8 @@
+// Set the current year in the footer
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+});
+
 // Functions for calculating turnover rates...
 function calculateTurnoverRate(leavers, beginningCount, endCount) {
   const averageCount = (beginningCount + endCount) / 2;

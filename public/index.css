@@ -1,5 +1,14 @@
 /* styles.css */
 
+/* Navbar link color for accessibility */
+.navbar-nav .nav-link {
+  color: #0056b3 !important; /* Ensure high contrast color */
+}
+
+.navbar-nav .nav-link:hover {
+  color: #003d99 !important; /* Darker shade for hover */
+}
+
 /* Hidden elements */
 .hidden {
   display: none;
@@ -25,6 +34,17 @@
 .mx-2 {
   margin-left: 0.5rem !important;
   margin-right: 0.5rem !important;
+}
+
+/* Footer alignment */
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer .social-icons {
+  display: flex;
 }
 
 /* Responsive Styles */

@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Employee Turnover App</title>
+    <meta
+      name="description"
+      content="Calculate, analyze, and visualize employee turnover rates over a selected period. Users can enter data manually or upload a CSV file containing the necessary information."
+    />
+    <meta
+      name="keywords"
+      content="Employee Turnover Rates, HR Analytics, Voluntary Departures, Organizational Costs, Productivity Losses, Turnover Formula, Average Headcount, Annualized Turnover, Data Analysis, HR Interventions"
+    />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -47,174 +55,189 @@
         </div>
       </nav>
     </header>
+    <main>
+      <div class="container mt-5">
+        <h2>Employee Turnover Rate Calculator</h2>
 
-    <div class="container mt-5">
-      <h2>Employee Turnover Rate Calculator</h2>
+        <div class="form-group">
+          <label for="initialHeadcount"
+            >Initial Headcount for Start Month:</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="initialHeadcount"
+            placeholder="Enter initial headcount"
+            data-toggle="tooltip"
+            title="Enter the headcount at the beginning of the start month. For subsequent months, the beginning headcount will automatically adjust to match the previous month's ending headcount."
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="initialHeadcount">Initial Headcount for Start Month:</label>
-        <input
-          type="number"
-          class="form-control"
-          id="initialHeadcount"
-          placeholder="Enter initial headcount"
-          data-toggle="tooltip"
-          title="Enter the headcount at the beginning of the start month. For subsequent months, the beginning headcount will automatically adjust to match the previous month's ending headcount."
-        />
-      </div>
+        <div class="form-row align-items-center">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="dataEntryMethod">Select Data Entry Method:</label>
+              <select class="form-control" id="dataEntryMethod">
+                <option value="">Please select</option>
+                <option value="manual">Manual Data Entry</option>
+                <option value="upload">CSV File Upload</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-      <div class="form-row align-items-center">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="dataEntryMethod">Select Data Entry Method:</label>
-            <select class="form-control" id="dataEntryMethod">
-              <option value="">Please select</option>
-              <option value="manual">Manual Data Entry</option>
-              <option value="upload">CSV File Upload</option>
+        <div id="manualEntryFields" class="row my-4 hidden">
+          <div class="col-md-6">
+            <label for="startMonth">Beginning Month:</label>
+            <select class="form-control" id="startMonth">
+              <!-- Options for months will be dynamically generated or hard-coded here -->
             </select>
           </div>
-        </div>
-      </div>
-
-      <div id="manualEntryFields" class="row my-4 hidden">
-        <div class="col-md-6">
-          <label for="startMonth">Beginning Month:</label>
-          <select class="form-control" id="startMonth">
-            <!-- Options for months will be dynamically generated or hard-coded here -->
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="endMonth">Ending Month:</label>
-          <select class="form-control" id="endMonth">
-            <!-- Options for months will be dynamically generated or hard-coded here -->
-          </select>
-        </div>
-        <div class="col-md-6 mt-1rem">
-          <button
-            id="generateFormBtn"
-            class="btn btn-info mb-3"
-            data-toggle="tooltip"
-            title="Enter the headcount at the beginning of the start month before generating your form"
-          >
-            Generate Form
-          </button>
-        </div>
-      </div>
-
-      <div id="fileUploadFields" class="custom-file mb-3 hidden">
-        <form
-          method="post"
-          id="uploadForm"
-          action="/upload"
-          enctype="multipart/form-data"
-        >
-          <div class="custom-file mb-3">
-            <input
-              type="file"
-              class="custom-file-input"
-              name="dataFile"
-              id="dataFile"
+          <div class="col-md-6">
+            <label for="endMonth">Ending Month:</label>
+            <select class="form-control" id="endMonth">
+              <!-- Options for months will be dynamically generated or hard-coded here -->
+            </select>
+          </div>
+          <div class="col-md-6 mt-1rem">
+            <button
+              id="generateFormBtn"
+              class="btn btn-info mb-3"
+              type="button"
               data-toggle="tooltip"
-              title="Upload a CSV file with the following data in order without headers: month, number of employees who left, number of employees at the end of the month."
-            />
-            <label class="custom-file-label" for="dataFile">Choose file</label>
+              title="Enter the headcount at the beginning of the start month before generating your form"
+            >
+              Generate Form
+            </button>
           </div>
-          <button type="submit" class="btn btn-primary">Upload File</button>
-        </form>
-      </div>
+        </div>
 
-      <div id="turnoverForm" class="mt-4 hidden">
-        <form>
-          <div id="dynamicFormContainer">
-            <!-- Dynamic input fields will be inserted here -->
-          </div>
-
-          <div class="card chart-options mb-4">
-            <div class="card-header">
-              <h4>Select Data for Chart:</h4>
+        <div id="fileUploadFields" class="custom-file mb-3 hidden">
+          <form
+            method="post"
+            id="uploadForm"
+            action="/upload"
+            enctype="multipart/form-data"
+          >
+            <div class="custom-file mb-3">
+              <input
+                type="file"
+                class="custom-file-input"
+                name="dataFile"
+                id="dataFile"
+                data-toggle="tooltip"
+                title="Upload a CSV file with the following data in order without headers: month, number of employees who left, number of employees at the end of the month."
+              />
+              <label class="custom-file-label" for="dataFile"
+                >Choose file</label
+              >
             </div>
-            <div class="card-body">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value="monthlyRates"
-                  id="checkMonthlyRates"
-                  checked
-                />
-                <label class="form-check-label" for="checkMonthlyRates"
-                  >Monthly Rates</label
-                >
+            <button type="submit" class="btn btn-primary">Upload File</button>
+          </form>
+        </div>
+
+        <div id="turnoverForm" class="mt-4 hidden">
+          <form>
+            <div id="dynamicFormContainer">
+              <!-- Dynamic input fields will be inserted here -->
+            </div>
+
+            <div class="card chart-options mb-4">
+              <div class="card-header">
+                <h4>Select Data for Chart:</h4>
               </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value="quarterlyRates"
-                  id="checkQuarterlyRates"
-                />
-                <label class="form-check-label" for="checkQuarterlyRates"
-                  >Quarterly Rates</label
-                >
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value="ytdRates"
-                  id="checkYtdRates"
-                />
-                <label class="form-check-label" for="checkYtdRates"
-                  >YTD Rates</label
-                >
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value="annualizedRates"
-                  id="checkAnnualizedRates"
-                />
-                <label class="form-check-label" for="checkAnnualizedRates"
-                  >Annualized Rates</label
-                >
+              <div class="card-body">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="monthlyRates"
+                    id="checkMonthlyRates"
+                    checked
+                  />
+                  <label class="form-check-label" for="checkMonthlyRates"
+                    >Monthly Rates</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="quarterlyRates"
+                    id="checkQuarterlyRates"
+                  />
+                  <label class="form-check-label" for="checkQuarterlyRates"
+                    >Quarterly Rates</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="ytdRates"
+                    id="checkYtdRates"
+                  />
+                  <label class="form-check-label" for="checkYtdRates"
+                    >YTD Rates</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="annualizedRates"
+                    id="checkAnnualizedRates"
+                  />
+                  <label class="form-check-label" for="checkAnnualizedRates"
+                    >Annualized Rates</label
+                  >
+                </div>
               </div>
             </div>
-          </div>
 
-          <button type="submit" class="btn btn-primary">Submit Data</button>
-        </form>
+            <button type="submit" class="btn btn-primary">Submit Data</button>
+          </form>
+        </div>
+
+        <div id="turnoverRatesTable" class="mt-4 hidden">
+          <h3>Turnover Rates</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Monthly Rate (%)</th>
+                <th scope="col">Quarterly Rate (%)</th>
+                <th scope="col">YTD Rate (%)</th>
+                <th scope="col">Annualized Rate (%)</th>
+              </tr>
+            </thead>
+            <tbody id="ratesTableBody">
+              <!-- Calculated rates will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <canvas id="turnoverChart"></canvas>
+
+        <button
+          id="generatePdfBtn"
+          class="btn btn-danger mt-3 hidden"
+          type="button"
+        >
+          Generate PDF
+        </button>
       </div>
-
-      <div id="turnoverRatesTable" class="mt-4 hidden">
-        <h3>Turnover Rates</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Month</th>
-              <th scope="col">Monthly Rate (%)</th>
-              <th scope="col">Quarterly Rate (%)</th>
-              <th scope="col">YTD Rate (%)</th>
-              <th scope="col">Annualized Rate (%)</th>
-            </tr>
-          </thead>
-          <tbody id="ratesTableBody">
-            <!-- Calculated rates will be inserted here -->
-          </tbody>
-        </table>
-      </div>
-
-      <canvas id="turnoverChart"></canvas>
-
-      <button id="generatePdfBtn" class="btn btn-danger mt-3 hidden">
-        Generate PDF
-      </button>
-    </div>
-
+    </main>
     <!-- Footer -->
     <footer class="bg-light text-center text-lg-start mt-5">
-      <div class="container p-4">
-        <div class="mb-3">
+      <div
+        class="container p-4 d-flex justify-content-between align-items-center"
+      >
+        <div class="text-center p-3">
+          © <span id="currentYear"></span> @pgtipping | Employee Turnover
+          Calculator
+        </div>
+        <div class="social-icons">
           <a
             href="https://x.com/Pgtipping01"
             target="_blank"
@@ -233,10 +256,6 @@
           >
             <i class="fab fa-reddit"></i>
           </a>
-        </div>
-        <div class="text-center p-3">
-          © <span id="currentYear"></span> @pgtipping | Employee Turnover
-          Calculator
         </div>
       </div>
     </footer>

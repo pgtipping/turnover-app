@@ -1,27 +1,21 @@
 /* styles.css */
-
-/* Navbar link color for accessibility */
-.navbar-nav a.nav-link {
-  color: #0056b3 !important; /* Ensure high contrast color */
-}
-
-.navbar-nav a.nav-link:hover {
-  color: #003d99 !important; /* Darker shade for hover */
-}
-
 /* Hidden elements */
 .hidden {
   display: none;
 }
 
-/* Button margin top adjustment */
-.mt-1rem {
-  margin-top: 1rem !important;
+/* Navbar link color for accessibility */
+.navbar-nav .nav-link {
+  color: #0056b3 !important; /* Ensure high contrast color */
+}
+
+.navbar-nav .nav-link:hover {
+  color: #003d99 !important; /* Darker shade for hover */
 }
 
 /* Social Media Icons */
 .social-icon {
-  font-size: 30px !important;
+  font-size: 30px;
   color: inherit; /* Ensures icons inherit the text color */
   text-decoration: none;
 }
@@ -34,6 +28,11 @@
 .mx-2 {
   margin-left: 0.5rem !important;
   margin-right: 0.5rem !important;
+}
+
+/* Utility class for margin-top */
+.mt-1rem {
+  margin-top: 1rem !important;
 }
 
 /* Footer alignment */

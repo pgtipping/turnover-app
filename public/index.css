@@ -14,10 +14,8 @@
 }
 
 /* Social Media Icons */
-.social-icon,
-.fab,
-.fa-reddit {
-  font-size: 30px;
+.social-icon {
+  font-size: 20px;
   color: inherit; /* Ensures icons inherit the text color */
   text-decoration: none;
 }
@@ -46,6 +44,7 @@ footer .container {
 
 footer .social-icons {
   display: flex;
+  align-items: center;
 }
 
 /* Responsive Styles */

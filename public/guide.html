@@ -1,48 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Turnover App Guide</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="guide.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guide - Employee Turnover Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="guide.css" />
+  </head>
+  <body>
     <header>
-        <h1>Guide to Using the Employee Turnover App</h1>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">Employee Turnover</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Calculator</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </header>
 
-    <section id="introduction">
-        <h2>Introduction</h2>
-        <p>This app helps you calculate and visualize employee turnover rates over a selected period...</p>
-    </section>
+    <main class="container mt-5">
+      <h1>Guide to Using the Employee Turnover Calculator</h1>
+      <p>
+        Welcome to the guide for the Employee Turnover Calculator. This tool
+        helps you calculate and analyze employee turnover rates over any given
+        period, with monthly data on number of voluntary exits and total
+        employees at the end of each month.
+      </p>
+      <p>
+        Before using the app, ensure you have the initial or starting headcount
+        for the start month (i.e., total number of employees in the first month
+        of the period which you intend to calculate employee turnover), and
+        monthly employee data for total exits and headcount at monthend.
+      </p>
+      <h2>How to Use the Calculator</h2>
+      <p>To use the calculator, follow these steps:</p>
 
-    <section id="getting-started">
-        <h2>Getting Started</h2>
-        <p>Before using the app, ensure you have the initial headcount and monthly employee data ready...</p>
-    </section>
+      <ol>
+        <li>
+          Enter the initial headcount for the start month in the "Initial
+          Headcount" field.
+        </li>
+        <li>Select the data entry method (manual or CSV upload).</li>
+        <li>
+          Select a start month (representing the beginning period) and an end
+          month (representing the end of the period).
+        </li>
+        <li>
+          Click on the generate form button. This displays a form with four
+          columns, Month, Beginning (prepopulated with your initial headcount
+          and auto updates as you enter the ending headcount), Voluntary Exits,
+          and End (representing ending headcount), for each month. The form is
+          populated with all the months representing your selected period from
+          the start month to the end month.
+        </li>
 
-    <section id="step-by-step">
-        <h2>Step-by-Step Guide</h2>
-        <!-- Include subsections for each step here -->
-    </section>
+        <li>Enter the number of exits in the "Voluntary Exits" field.</li>
+        <li>
+          Enter the headcount at monthend in the "End" field. The beginning
+          headcount for the next month dynamically updates to the previous
+          month's ending headcount.
+        </li>
+        <li>
+          Repeat steps 5 and 6 for each month in the period you wish to analyze.
+        </li>
+        <li>
+          Select your preferred data for the chart visualization. Options are
+          monthly rates, quarterly rates, year-to-date (YTD) rates, and
+          annualized rates.
+        </li>
+        <li>
+          Click the "Submit" button to generate the employee turnover rate for
+          each month. A table with the calculated rates, a chart visualization
+          based on selected data, and a generate pdf button will appear below
+          the submit button.
+        </li>
+        <li>
+          Click the "Generate PDF" button to download a PDF report of the entire
+          page including calculated rates and chart visualization. The generated
+          pdf is automatically saved to your default download folder.
+        </li>
+      </ol>
+      <!-- Add more content as needed -->
+    </main>
 
-    <section id="generating-pdf">
-        <h2>Generating the PDF</h2>
-        <p>Once you have reviewed the calculated rates and the chart, click on "Generate PDF" to download a report...</p>
-    </section>
-
-    <section id="tips">
-        <h2>Tips and Troubleshooting</h2>
-        <p>To ensure accurate data entry, double-check the voluntary exits and ending headcount for each month...</p>
-    </section>
-
-    <footer>
-        <p>© Your Company | Employee Turnover App Guide</p>
+    <footer class="bg-light text-center text-lg-start mt-5">
+      <div
+        class="container p-4 d-flex justify-content-between align-items-center"
+      >
+        <div class="text-center p-3">
+          © <span id="currentYear"></span> @pgtipping | Employee Turnover
+          Calculator
+        </div>
+        <div class="social-icons d-flex align-items-center">
+          <a
+            href="https://x.com/Pgtipping01"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-icon mx-2"
+            title="Follow on X"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              width="20"
+              height="20"
+              class="social-icon"
+            >
+              <path
+                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+                fill="currentColor"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://www.reddit.com/user/Old-Dust977/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-icon mx-2"
+            title="Follow on Reddit"
+          >
+            <i class="fab fa-reddit"></i>
+          </a>
+        </div>
+      </div>
     </footer>
-</body>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("currentYear").textContent =
+          new Date().getFullYear();
+      });
+    </script>
+  </body>
 </html>

@@ -1,15 +1,54 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    margin: 20px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+  background-color: #f8f9fa;
 }
 
-header, section, footer {
-    margin-bottom: 20px;
+h1 {
+  font-size: 2em;
+  color: #0056b3;
 }
 
-h1, h2 {
-    color: #0056b3;
+p {
+  font-size: 1em;
+  color: #333;
 }
 
-/* Further style your page according to your branding and preference */
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: #0056b3 !important;
+}
+
+.navbar .nav-link:hover {
+  color: #003d99 !important;
+}
+
+/* Social Media Icons */
+.social-icon {
+  font-size: 20px;
+  color: inherit; /* Ensures icons inherit the text color */
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  color: #0056b3; /* Change to desired hover color */
+}
+
+/* Ensure footer links have appropriate spacing */
+.mx-2 {
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+}
+
+/* Footer alignment */
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer .social-icons {
+  display: flex;
+  align-items: center;
+}

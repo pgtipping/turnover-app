@@ -21,7 +21,7 @@
 
 /* Social Media Icons */
 .social-icon {
-  font-size: 30px;
+  font-size: 30px !important;
   color: inherit; /* Ensures icons inherit the text color */
   text-decoration: none;
 }

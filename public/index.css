@@ -14,7 +14,9 @@
 }
 
 /* Social Media Icons */
-.social-icon .fab .fa-reddit {
+.social-icon,
+.fab,
+.fa-reddit {
   font-size: 30px;
   color: inherit; /* Ensures icons inherit the text color */
   text-decoration: none;

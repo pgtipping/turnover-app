@@ -1,11 +1,11 @@
 /* styles.css */
 
 /* Navbar link color for accessibility */
-.navbar-nav .nav-link {
+.navbar-nav a.nav-link {
   color: #0056b3 !important; /* Ensure high contrast color */
 }
 
-.navbar-nav .nav-link:hover {
+.navbar-nav a.nav-link:hover {
   color: #003d99 !important; /* Darker shade for hover */
 }
 

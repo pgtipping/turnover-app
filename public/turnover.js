@@ -5,6 +5,35 @@ function calculateTurnoverRate(leavers, beginningCount, endCount) {
 }
 
 $(document).ready(function () {
+  // Set the current year in the footer
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+  // Theme toggle functionality
+  const themeToggleBtn = document.getElementById("theme-toggle");
+  const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const currentTheme = localStorage.getItem("theme");
+
+  if (currentTheme == "dark") {
+    document.body.classList.toggle("dark-theme");
+  } else if (currentTheme == "light") {
+    document.body.classList.toggle("light-theme");
+  }
+
+  themeToggleBtn.addEventListener("click", function () {
+    if (prefersDarkScheme.matches) {
+      document.body.classList.toggle("light-theme");
+      var theme = document.body.classList.contains("light-theme")
+        ? "light"
+        : "dark";
+    } else {
+      document.body.classList.toggle("dark-theme");
+      var theme = document.body.classList.contains("dark-theme")
+        ? "dark"
+        : "light";
+    }
+    localStorage.setItem("theme", theme);
+  });
+
   $("#dataEntryMethod").change(function () {
     var method = $(this).val();
     $("#manualEntryFields").hide();
@@ -41,8 +70,6 @@ $(document).ready(function () {
   }
 
   populateMonthDropdowns();
-
-  //    let  startMonthIndex, endMonthIndex;
 
   // Dynamically generate form fields based on selected months
   $("#generateFormBtn").click(function () {
@@ -193,11 +220,9 @@ $(document).ready(function () {
         beginningHeadcountForQuarter = employeesEnd; // Set the beginning headcount for the next quarter
       }
       // Annualized rate calculation (only if the selected range is at least one month)
-      // if (i - startMonthIndex >= 0) {
       const monthsCount = i - startMonthIndex + 1;
       let annualizedRate = (ytdRate * 12) / monthsCount;
       annualizedRates.push(annualizedRate);
-      // }
 
       tableRows += `
                 <tr>
@@ -332,9 +357,9 @@ $(document).ready(function () {
         }
       });
   });
+
   // Tooltip initialization for dynamic and static elements
   $('[data-toggle="tooltip"]').tooltip(); // Initialize tooltips for static elements
-  // $('#generateFormBtn').click(function() {});
 
   // Update the label text with the name of the uploaded file
   $(".custom-file-input").on("change", function () {
@@ -472,35 +497,4 @@ $(document).ready(function () {
     console.log("Generated Labels:", labels);
     return labels;
   }
-  // Set the current year in the footer
-  document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("currentYear").textContent =
-      new Date().getFullYear();
-
-    // Theme toggle functionality
-    const themeToggleBtn = document.getElementById("theme-toggle");
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    const currentTheme = localStorage.getItem("theme");
-
-    if (currentTheme == "dark") {
-      document.body.classList.toggle("dark-theme");
-    } else if (currentTheme == "light") {
-      document.body.classList.toggle("light-theme");
-    }
-
-    themeToggleBtn.addEventListener("click", function () {
-      if (prefersDarkScheme.matches) {
-        document.body.classList.toggle("light-theme");
-        var theme = document.body.classList.contains("light-theme")
-          ? "light"
-          : "dark";
-      } else {
-        document.body.classList.toggle("dark-theme");
-        var theme = document.body.classList.contains("dark-theme")
-          ? "dark"
-          : "light";
-      }
-      localStorage.setItem("theme", theme);
-    });
-  });
 });

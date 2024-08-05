@@ -1,4 +1,3 @@
-/* styles.css */
 /* Hidden elements */
 .hidden {
   display: none;
@@ -18,6 +17,10 @@
   font-size: 20px;
   color: inherit; /* Ensures icons inherit the text color */
   text-decoration: none;
+}
+
+.social-icon svg {
+  display: block; /* Center the SVG */
 }
 
 .social-icon:hover {
@@ -47,19 +50,47 @@ footer .social-icons {
   align-items: center;
 }
 
-/* Responsive Styles */
-
-/* Mobile styles (default) */
-@media (max-width: 767.98px) {
-  /* Add specific mobile styles here if needed */
+/* Dark Mode Styles */
+body {
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Tablets and small laptops */
-@media (min-width: 768px) and (max-width: 991.98px) {
-  /* Add specific styles for tablets and small laptops here if needed */
+.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
 }
 
-/* Laptops and PCs */
-@media (min-width: 992px) {
-  /* Add specific styles for laptops and PCs here if needed */
+.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-theme .navbar,
+.dark-theme .footer {
+  background-color: #1f1f1f;
+}
+
+.light-theme .navbar,
+.light-theme .footer {
+  background-color: #f8f9fa;
+}
+
+.dark-theme .navbar .navbar-brand,
+.dark-theme .navbar .nav-link {
+  color: #ffffff !important;
+}
+
+.light-theme .navbar .navbar-brand,
+.light-theme .navbar .nav-link {
+  color: #000000 !important;
+}
+
+.dark-theme .social-icon,
+.light-theme .social-icon {
+  color: inherit; /* Ensures icons inherit the text color */
+}
+
+.dark-theme .social-icon:hover,
+.light-theme .social-icon:hover {
+  color: #007bff; /* Change to desired hover color */
 }

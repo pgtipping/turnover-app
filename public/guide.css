@@ -3,6 +3,7 @@ body {
   font-size: 16px;
   color: #333;
   background-color: #f8f9fa;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 h1 {
@@ -31,6 +32,10 @@ p {
   text-decoration: none;
 }
 
+.social-icon svg {
+  display: block; /* Center the SVG */
+}
+
 .social-icon:hover {
   color: #0056b3; /* Change to desired hover color */
 }
@@ -51,4 +56,49 @@ footer .container {
 footer .social-icons {
   display: flex;
   align-items: center;
+}
+
+/* Dark Mode Styles */
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-theme .navbar,
+.dark-theme .footer {
+  background-color: #1f1f1f;
+}
+
+.light-theme .navbar,
+.light-theme .footer {
+  background-color: #f8f9fa;
+}
+
+.dark-theme .navbar .navbar-brand,
+.dark-theme .navbar .nav-link {
+  color: #ffffff !important;
+}
+
+.light-theme .navbar .navbar-brand,
+.light-theme .navbar .nav-link {
+  color: #000000 !important;
+}
+
+.dark-theme .social-icon,
+.light-theme .social-icon {
+  color: inherit; /* Ensures icons inherit the text color */
+}
+
+.dark-theme .social-icon:hover,
+.light-theme .social-icon:hover {
+  color: #007bff; /* Change to desired hover color */
 }

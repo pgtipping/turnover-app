@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   // Set the current year in the footer
   document.getElementById("currentYear").textContent = new Date().getFullYear();
 
@@ -7,10 +7,18 @@ $(document).ready(function () {
   const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
   const currentTheme = localStorage.getItem("theme");
 
-  if (currentTheme == "dark") {
-    switchToDarkTheme();
-  } else if (currentTheme == "light") {
-    switchToLightTheme();
+  if (currentTheme) {
+    if (currentTheme === "dark") {
+      switchToDarkTheme();
+    } else if (currentTheme === "light") {
+      switchToLightTheme();
+    }
+  } else {
+    if (prefersDarkScheme.matches) {
+      switchToDarkTheme();
+    } else {
+      switchToLightTheme();
+    }
   }
 
   themeToggleBtn.addEventListener("click", function () {

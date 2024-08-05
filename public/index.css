@@ -56,8 +56,8 @@ body {
 }
 
 .dark-theme {
-  background-color: #121212;
-  color: #ffffff;
+  background-color: #12121286;
+  color: #ffffffe2;
 }
 
 .light-theme {
@@ -67,12 +67,12 @@ body {
 
 .dark-theme .navbar,
 .dark-theme .footer {
-  background-color: #1f1f1f;
+  background-color: #1f1f1fdc;
 }
 
 .light-theme .navbar,
 .light-theme .footer {
-  background-color: #f8f9fa;
+  background-color: #f8f9fae5;
 }
 
 .dark-theme .navbar .navbar-brand,

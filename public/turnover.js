@@ -14,25 +14,52 @@ $(document).ready(function () {
   const currentTheme = localStorage.getItem("theme");
 
   if (currentTheme == "dark") {
-    document.body.classList.toggle("dark-theme");
+    switchToDarkTheme();
   } else if (currentTheme == "light") {
-    document.body.classList.toggle("light-theme");
+    switchToLightTheme();
   }
 
   themeToggleBtn.addEventListener("click", function () {
     if (prefersDarkScheme.matches) {
-      document.body.classList.toggle("light-theme");
-      var theme = document.body.classList.contains("light-theme")
-        ? "light"
-        : "dark";
+      if (document.body.classList.contains("light-theme")) {
+        switchToDarkTheme();
+        localStorage.setItem("theme", "dark");
+      } else {
+        switchToLightTheme();
+        localStorage.setItem("theme", "light");
+      }
     } else {
-      document.body.classList.toggle("dark-theme");
-      var theme = document.body.classList.contains("dark-theme")
-        ? "dark"
-        : "light";
+      if (document.body.classList.contains("dark-theme")) {
+        switchToLightTheme();
+        localStorage.setItem("theme", "light");
+      } else {
+        switchToDarkTheme();
+        localStorage.setItem("theme", "dark");
+      }
     }
-    localStorage.setItem("theme", theme);
   });
+
+  function switchToDarkTheme() {
+    document
+      .getElementById("bootstrap-css")
+      .setAttribute(
+        "href",
+        "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
+      );
+    document.body.classList.add("dark-theme");
+    document.body.classList.remove("light-theme");
+  }
+
+  function switchToLightTheme() {
+    document
+      .getElementById("bootstrap-css")
+      .setAttribute(
+        "href",
+        "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      );
+    document.body.classList.add("light-theme");
+    document.body.classList.remove("dark-theme");
+  }
 
   $("#dataEntryMethod").change(function () {
     var method = $(this).val();

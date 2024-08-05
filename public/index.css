@@ -50,13 +50,13 @@ footer .social-icons {
   align-items: center;
 }
 
-/* Dark Mode Styles */
+/* Dark Mode Styles 
 body {
   transition: background-color 0.3s, color 0.3s;
 }
 
 .dark-theme {
-  background-color: #12121286;
+  background-color: #212529;
   color: #ffffffe2;
 }
 
@@ -87,10 +87,11 @@ body {
 
 .dark-theme .social-icon,
 .light-theme .social-icon {
-  color: inherit; /* Ensures icons inherit the text color */
+  color: inherit; 
 }
 
 .dark-theme .social-icon:hover,
 .light-theme .social-icon:hover {
-  color: #007bff; /* Change to desired hover color */
+  color: #007bff;  
 }
+*/

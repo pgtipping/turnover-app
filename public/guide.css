@@ -1,9 +1,4 @@
 body {
-  font-family: -apple-system, "BlinkMacSystemFont", "Roboto", "Helvetica Neue",
-    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 16px;
-  color: #333;
   transition: background-color 0.3s, color 0.3s;
 }
 

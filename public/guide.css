@@ -18,9 +18,8 @@ p {
   color: #333;
 }
 
-.navbar .navbar-brand,
-.navbar .nav-link {
-  color: #0056b3 !important;
+.navbar-nav .nav-link {
+  color: #0056b3 !important; /* Ensure high contrast color */
 }
 
 .navbar .nav-link:hover {

@@ -2,16 +2,6 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-h1 {
-  font-size: 2em;
-  color: #0e0f0f;
-}
-
-p {
-  font-size: 1em;
-  color: #333;
-}
-
 .navbar-nav .nav-link {
   color: #0056b3 !important; /* Ensure high contrast color */
 }

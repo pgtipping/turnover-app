@@ -65,57 +65,13 @@ const upload = multer({
 });
 
 // Route for handling file uploads with input validation
-app.post("/upload", upload.single("dataFile"), async (req, res) => {
+app.post("/upload", upload.single("dataFile"), (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
 
-  try {
-    // Upload file to Vercel Blob
-    const blob = await put(
-      `uploads/${Date.now()}_${req.file.originalname}`,
-      req.file.buffer,
-      {
-        access: "public",
-      }
-    );
-
-    const fileUrl = blob.url; // The URL to access the uploaded file
-
-    // Process the file content (e.g., parse CSV)
-    const results = [];
-    Readable.from(req.file.buffer)
-      .pipe(csvParser({ headers: false })) // Indicate no headers in the CSV
-      .on("data", (row) => {
-        const monthData = {
-          month: row[0], // First column is the month
-          leavers: parseInt(row[1], 10), // Second column is leavers
-          endCount: parseInt(row[2], 10), // Third column is endCount
-        };
-        results.push(monthData);
-      })
-      .on("end", async () => {
-        // After processing, delete the file from Vercel Blob
-        try {
-          await put(blob.pathname, "", { access: "public" }); // This removes the blob
-          console.log("File deleted successfully from Vercel Blob.");
-        } catch (deleteError) {
-          console.error("Error deleting file:", deleteError);
-        }
-
-        // Send the processed results back to the client
-        res.json({
-          message: "File processed and deleted successfully",
-          results,
-        });
-      })
-      .on("error", (err) => {
-        res.status(500).send(err.message);
-      });
-  } catch (error) {
-    console.error("Error uploading or processing file:", error);
-    res.status(500).send("File upload failed.");
-  }
+  console.log(req.file); // Log the file details to ensure it's being received
+  res.send("File uploaded successfully");
 });
 
 // Error handling middleware

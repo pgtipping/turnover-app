@@ -10,6 +10,26 @@ body {
   color: #003d99 !important;
 }
 
+/* Limit the width of the main content and center it */
+main.container {
+  max-width: 800px; /* Adjust the width as needed */
+  margin: 0 auto;
+  padding: 20px; /* Add padding for white space around the content */
+}
+
+/* Add space between elements */
+main h1 {
+  margin-bottom: 20px;
+}
+
+main p {
+  margin-bottom: 20px;
+}
+
+nav.navbar {
+  margin-bottom: 40px; /* Add space below the navbar */
+}
+
 /* Social Media Icons */
 .social-icon {
   font-size: 20px;
@@ -43,45 +63,7 @@ footer .social-icons {
   align-items: center;
 }
 
-/* Dark Mode Styles 
-
-.dark-theme {
-  background-color: #12121286;
-  color: #ffffffe2;
+footer {
+  margin-top: 40px; /* Add space above the footer */
+  padding-top: 20px; /* Add padding to the top of the footer */
 }
-
-.light-theme {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.dark-theme .navbar,
-.dark-theme .footer {
-  background-color: #1f1f1fdc;
-}
-
-.light-theme .navbar,
-.light-theme .footer {
-  background-color: #f8f9fae5;
-}
-
-.dark-theme .navbar .navbar-brand,
-.dark-theme .navbar .nav-link {
-  color: #ffffff !important;
-}
-
-.light-theme .navbar .navbar-brand,
-.light-theme .navbar .nav-link {
-  color: #000000 !important;
-}
-
-.dark-theme .social-icon,
-.light-theme .social-icon {
-  color: inherit; 
-}
-
-.dark-theme .social-icon:hover,
-.light-theme .social-icon:hover {
-  color: #007bff; 
-}
-*/

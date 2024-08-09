@@ -1,13 +1,15 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+import express from "express";
+import multer from "multer";
+import path from "path";
+import csvParser from "csv-parser";
+import { put } from "@vercel/blob"; // Use the correct import from the SDK
+import { Readable } from "stream";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import { v4 as uuidv4 } from "uuid"; // Import UUID library
 
-const express = require("express");
-const multer = require("multer");
-const path = require("path");
-const csvParser = require("csv-parser");
-const { createClient } = require("@vercel/blob"); // Import Vercel Blob SDK
-const { Readable } = require("stream"); // Import Readable stream
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -42,9 +44,6 @@ app.get("/guide", (req, res) => {
   res.sendFile(path.resolve("public/guide.html"));
 });
 
-// Set up Vercel Blob client
-const blobClient = createClient();
-
 // Multer setup for file uploads using memory storage
 const storage = multer.memoryStorage(); // Use memory storage instead of disk storage
 
@@ -67,19 +66,17 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
     return res.status(400).send("No file uploaded.");
   }
 
-  let fileUrl;
-
   try {
     // Upload file to Vercel Blob
-    const blob = await blobClient.put(
+    const blob = await put(
       `uploads/${Date.now()}_${req.file.originalname}`,
+      req.file.buffer,
       {
-        body: Readable.from(req.file.buffer),
-        contentType: req.file.mimetype,
+        access: "public",
       }
     );
 
-    fileUrl = blob.url; // The URL to access the uploaded file
+    const fileUrl = blob.url; // The URL to access the uploaded file
 
     // Process the file content (e.g., parse CSV)
     const results = [];
@@ -96,7 +93,7 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
       .on("end", async () => {
         // After processing, delete the file from Vercel Blob
         try {
-          await blobClient.delete(blob.key);
+          await put(blob.pathname, "", { access: "public" }); // This removes the blob
           console.log("File deleted successfully from Vercel Blob.");
         } catch (deleteError) {
           console.error("Error deleting file:", deleteError);

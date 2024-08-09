@@ -1,22 +1,20 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+import express from "express";
+import multer from "multer";
+import path from "path";
+import csvParser from "csv-parser";
+import { createClient } from "@vercel/blob";
+import { Readable } from "stream";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
-const express = require("express");
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
-const csvParser = require("csv-parser");
-const ExcelJS = require("exceljs");
-const puppeteer = require("puppeteer");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
-const { body, validationResult } = require("express-validator");
-const { v4: uuidv4 } = require("uuid"); // Import UUID library
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// Serve static files securely
 app.use(express.static(path.join(__dirname, "public")));
+
 // Rate limiting to prevent abuse
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -41,46 +39,19 @@ app.use(
   })
 );
 
-app.get("/guide", function (req, res) {
-  res.sendFile(__dirname + "/public/guide.html");
+app.get("/guide", (req, res) => {
+  res.sendFile(path.resolve("public/guide.html"));
 });
 
-// Multer setup for secure file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) =>
-    cb(null, process.env.FILE_UPLOAD_PATH || "uploads/"),
-  filename: (req, file, cb) => {
-    // Generate a secure filename using UUID
-    const secureName = `${file.fieldname}-${uuidv4()}${path.extname(
-      file.originalname
-    )}`;
+// Set up Vercel Blob client
+const blobClient = createClient();
 
-    // Sanitize the file extension (basic example)
-    const safeExt = path.extname(secureName).replace(/[^a-zA-Z0-9.]/g, "");
-
-    // Construct the final filename
-    const finalName =
-      path.basename(secureName, path.extname(secureName)) + safeExt;
-
-    cb(null, finalName);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    "text/csv",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ];
-  if (!allowedTypes.includes(file.mimetype)) {
-    cb(new Error("Unsupported file type"), false);
-  } else {
-    cb(null, true);
-  }
-};
+// Multer setup for file uploads using memory storage
+const storage = multer.memoryStorage(); // Use memory storage instead of disk storage
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // for example, 10 MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype === "text/csv") {
       cb(null, true); // Accept file
@@ -92,25 +63,59 @@ const upload = multer({
 });
 
 // Route for handling file uploads with input validation
-app.post("/upload", upload.single("dataFile"), (req, res) => {
-  const results = [];
-  fs.createReadStream(req.file.path)
-    .pipe(csvParser({ headers: false })) // Indicate no headers in the CSV
-    .on("data", (row) => {
-      // Create an object for each row with properties for each column
-      const monthData = {
-        month: row[0], // First column is the month
-        leavers: parseInt(row[1], 10), // Second column is leavers
-        endCount: parseInt(row[2], 10), // Third column is endCount
-      };
-      results.push(monthData);
-    })
-    .on("end", () => {
-      res.json(results); // Send the parsed data back to the client
-    })
-    .on("error", (err) => {
-      res.status(500).send(err.message);
-    });
+app.post("/upload", upload.single("dataFile"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  let fileUrl;
+
+  try {
+    // Upload file to Vercel Blob
+    const blob = await blobClient.put(
+      `uploads/${Date.now()}_${req.file.originalname}`,
+      {
+        body: Readable.from(req.file.buffer),
+        contentType: req.file.mimetype,
+      }
+    );
+
+    fileUrl = blob.url; // The URL to access the uploaded file
+
+    // Process the file content (e.g., parse CSV)
+    const results = [];
+    Readable.from(req.file.buffer)
+      .pipe(csvParser({ headers: false })) // Indicate no headers in the CSV
+      .on("data", (row) => {
+        const monthData = {
+          month: row[0], // First column is the month
+          leavers: parseInt(row[1], 10), // Second column is leavers
+          endCount: parseInt(row[2], 10), // Third column is endCount
+        };
+        results.push(monthData);
+      })
+      .on("end", async () => {
+        // After processing, delete the file from Vercel Blob
+        try {
+          await blobClient.delete(blob.key);
+          console.log("File deleted successfully from Vercel Blob.");
+        } catch (deleteError) {
+          console.error("Error deleting file:", deleteError);
+        }
+
+        // Send the processed results back to the client
+        res.json({
+          message: "File processed and deleted successfully",
+          results,
+        });
+      })
+      .on("error", (err) => {
+        res.status(500).send(err.message);
+      });
+  } catch (error) {
+    console.error("Error uploading or processing file:", error);
+    res.status(500).send("File upload failed.");
+  }
 });
 
 // Error handling middleware

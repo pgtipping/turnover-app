@@ -23,7 +23,16 @@ main h1 {
 }
 
 main p {
+  font-size: 18px;
+  line-height: 1.6; /* Increase line height for better readability */
   margin-bottom: 20px;
+}
+
+main ul li,
+main ol li {
+  font-size: 18px;
+  line-height: 1.6; /* Increase line height for better readability */
+  margin-bottom: 10px; /* Add space between list items */
 }
 
 nav.navbar {

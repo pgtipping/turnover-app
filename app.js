@@ -2,14 +2,18 @@ import dotenv from "dotenv";
 import express from "express";
 import multer from "multer";
 import path from "path";
-import csvParser from "csv-parser";
-import { put } from "@vercel/blob"; // Use the correct import from the SDK
+import { fileURLToPath } from "url"; // Import to handle file paths
+import { put } from "@vercel/blob";
 import { Readable } from "stream";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { v4 as uuidv4 } from "uuid"; // Import UUID library
 
 dotenv.config();
+
+// Convert __dirname to ES6
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -41,7 +45,7 @@ app.use(
 );
 
 app.get("/guide", (req, res) => {
-  res.sendFile(path.resolve("public/guide.html"));
+  res.sendFile(path.resolve(__dirname, "public/guide.html"));
 });
 
 // Multer setup for file uploads using memory storage

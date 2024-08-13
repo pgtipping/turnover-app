@@ -66,7 +66,7 @@ const upload = multer({
 });
 
 // Route for handling file uploads with input validation
-app.post("/upload", upload.single("dataFile"), (req, res) => {
+app.post("/upload", upload.single("dataFile"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
@@ -74,19 +74,35 @@ app.post("/upload", upload.single("dataFile"), (req, res) => {
   console.log(req.file); // Log the file details to ensure it's being received
   res.send("File uploaded successfully");
 
-  const results = [];
-  Readable.from(req.file.buffer)
-    .pipe(csvParser({ headers: false }))
-    .on("data", (row) => {
-      results.push(row);
-    })
-    .on("end", () => {
-      res.json(results); // Send parsed data as JSON
-    })
-    .on("error", (err) => {
-      console.error(err);
-      res.status(500).send("Error parsing the file");
-    });
+  try {
+    // Upload file to Vercel Blob
+    const blob = await put(
+      `uploads/${Date.now()}_${req.file.originalname}`,
+      req.file.buffer,
+      {
+        access: "public",
+      }
+    );
+
+    const fileUrl = blob.url; // The URL to access the uploaded file
+
+    const results = [];
+    Readable.from(req.file.buffer)
+      .pipe(csvParser({ headers: false }))
+      .on("data", (row) => {
+        results.push(row);
+      })
+      .on("end", () => {
+        res.json(results); // Send parsed data as JSON
+      })
+      .on("error", (err) => {
+        console.error(err);
+        res.status(500).send("Error parsing the file");
+      });
+  } catch (error) {
+    console.error("Error uploading or processing file:", error);
+    res.status(500).send("File upload failed.");
+  }
 });
 
 // Error handling middleware

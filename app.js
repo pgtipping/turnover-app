@@ -8,6 +8,7 @@ import { Readable } from "stream";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { v4 as uuidv4 } from "uuid"; // Import UUID library
+import csvParser from "csv-parser";
 
 dotenv.config();
 
@@ -72,6 +73,20 @@ app.post("/upload", upload.single("dataFile"), (req, res) => {
 
   console.log(req.file); // Log the file details to ensure it's being received
   res.send("File uploaded successfully");
+
+  const results = [];
+  Readable.from(req.file.buffer)
+    .pipe(csvParser({ headers: false }))
+    .on("data", (row) => {
+      results.push(row);
+    })
+    .on("end", () => {
+      res.json(results); // Send parsed data as JSON
+    })
+    .on("error", (err) => {
+      console.error(err);
+      res.status(500).send("Error parsing the file");
+    });
 });
 
 // Error handling middleware

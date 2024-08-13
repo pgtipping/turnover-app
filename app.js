@@ -2,17 +2,16 @@ import dotenv from "dotenv";
 import express from "express";
 import multer from "multer";
 import path from "path";
-import { fileURLToPath } from "url"; // Import to handle file paths
-import { put } from "@vercel/blob";
+import csvParser from "csv-parser";
 import { Readable } from "stream";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-import { v4 as uuidv4 } from "uuid"; // Import UUID library
-import csvParser from "csv-parser";
+import { v4 as uuidv4 } from "uuid";
+import { fileURLToPath } from "url";
+import { put } from "@vercel/blob";
 
 dotenv.config();
 
-// Convert __dirname to ES6
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -65,14 +64,11 @@ const upload = multer({
   },
 });
 
-// Route for handling file uploads with input validation
+// Route for handling file uploads with input validation, Vercel Blob storage, and CSV parsing
 app.post("/upload", upload.single("dataFile"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
-
-  console.log(req.file); // Log the file details to ensure it's being received
-  res.send("File uploaded successfully");
 
   try {
     // Upload file to Vercel Blob
@@ -90,13 +86,29 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
     Readable.from(req.file.buffer)
       .pipe(csvParser({ headers: false }))
       .on("data", (row) => {
-        results.push(row);
+        const leavers = parseInt(row[1], 10);
+        const endCount = parseInt(row[2], 10);
+
+        if (isNaN(leavers) || isNaN(endCount)) {
+          console.warn(`Skipping invalid row: ${JSON.stringify(row)}`);
+          return; // Skip invalid rows
+        }
+
+        const monthData = {
+          leavers: leavers, // Second column is leavers
+          endCount: endCount, // Third column is endCount
+        };
+        results.push(monthData);
       })
       .on("end", () => {
-        res.json(results); // Send parsed data as JSON
+        res.json({
+          message: "File uploaded and processed successfully",
+          fileUrl,
+          results,
+        });
       })
       .on("error", (err) => {
-        console.error(err);
+        console.error("Error parsing the file:", err);
         res.status(500).send("Error parsing the file");
       });
   } catch (error) {

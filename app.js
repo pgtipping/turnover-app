@@ -67,10 +67,12 @@ const upload = multer({
 // Route for handling file uploads with input validation, Vercel Blob storage, and CSV parsing
 app.post("/upload", upload.single("dataFile"), async (req, res) => {
   if (!req.file) {
+    console.error("No file uploaded.");
     return res.status(400).send("No file uploaded.");
   }
 
   try {
+    console.log("Received file:", req.file.originalname);
     // Upload file to Vercel Blob
     const blob = await put(
       `uploads/${Date.now()}_${req.file.originalname}`,
@@ -82,11 +84,14 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
 
     const fileUrl = blob.url; // The URL to access the uploaded file
 
+    console.log("File uploaded to Vercel Blob, URL:", blob.url);
+
     const results = [];
     Readable.from(req.file.buffer)
       .pipe(csvParser({ headers: false }))
       .on("data", (row) => {
         console.log("CSV Row:", row);
+
         const leavers = parseInt(row[1], 10);
         const endCount = parseInt(row[2], 10);
 
@@ -109,6 +114,7 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
             .status(400)
             .send("No valid data found in the uploaded file.");
         }
+
         res.json({
           message: "File uploaded and processed successfully",
           fileUrl,

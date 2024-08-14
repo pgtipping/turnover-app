@@ -422,6 +422,10 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     var formData = new FormData(this);
+    // Log the form data being sent
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
 
     $.ajax({
       url: "/upload",

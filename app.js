@@ -16,7 +16,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.set("trust proxy", 1); // Trust the X-Forwarded-For header, crucial for Vercel or other proxy environments
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -27,6 +26,8 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
+
+const PORT = process.env.PORT || 5000;
 
 // Security enhancements
 app.use(
@@ -47,29 +48,33 @@ app.get("/guide", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public/guide.html"));
 });
 
+app.set("trust proxy", 1); // Trust first proxy
+
 // Multer setup for file uploads using memory storage
-const storage = multer.memoryStorage();
+const storage = multer.memoryStorage(); // Use memory storage instead of disk storage
 
 const upload = multer({
   storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
   fileFilter: (req, file, cb) => {
-    if (file.mimetype !== "text/csv" && !file.originalname.endsWith(".csv")) {
+    if (file.mimetype === "text/csv") {
+      cb(null, true); // Accept file
+    } else {
+      cb(null, false); // Reject file
       return cb(new Error("Only .csv files are allowed!"));
     }
-    cb(null, true);
   },
 });
 
 // Route for handling file uploads with input validation, Vercel Blob storage, and CSV parsing
 app.post("/upload", upload.single("dataFile"), async (req, res) => {
+  if (!req.file) {
+    console.error("No file uploaded.");
+    return res.status(400).send("No file uploaded.");
+  }
+
   try {
-    if (!req.file) {
-      throw new Error("No file uploaded.");
-    }
-
-    console.log("File received:", req.file.originalname);
-
+    console.log("Received file:", req.file.originalname);
     // Upload file to Vercel Blob
     const blob = await put(
       `uploads/${Date.now()}_${req.file.originalname}`,
@@ -79,7 +84,9 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
       }
     );
 
-    console.log("File uploaded to Vercel Blob:", blob.url);
+    const fileUrl = blob.url; // The URL to access the uploaded file
+
+    console.log("File uploaded to Vercel Blob, URL:", blob.url);
 
     const results = [];
     Readable.from(req.file.buffer)
@@ -92,38 +99,43 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
 
         if (isNaN(leavers) || isNaN(endCount)) {
           console.warn(`Skipping invalid row: ${JSON.stringify(row)}`);
-          return;
+          return; // Skip invalid rows
         }
 
         const monthData = {
-          leavers,
-          endCount,
+          leavers: leavers, // Second column is leavers
+          endCount: endCount, // Third column is endCount
         };
         results.push(monthData);
       })
       .on("end", () => {
+        console.log("Parsed Results:", results); // Log the parsed results
+
         if (results.length === 0) {
-          throw new Error("No valid data found in the uploaded file.");
+          return res
+            .status(400)
+            .send("No valid data found in the uploaded file.");
         }
+
         res.json({
           message: "File uploaded and processed successfully",
-          fileUrl: blob.url,
+          fileUrl,
           results,
         });
       })
       .on("error", (err) => {
-        throw new Error(`Error parsing the file: ${err.message}`);
+        console.error("Error parsing the file:", err);
+        res.status(500).send("Error parsing the file");
       });
   } catch (error) {
-    console.error("Error during file upload or processing:", error.message);
-    res.status(500).send("Something broke!");
+    console.error("Error uploading or processing file:", error);
+    res.status(500).send("File upload failed.");
   }
 });
 
-// Error handling middleware with detailed logging
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error("Error stack:", err.stack); // Log the full error stack
-  console.error("Error message:", err.message); // Log the error message
+  console.error(err.stack);
   res.status(500).send("Something broke!");
 });
 

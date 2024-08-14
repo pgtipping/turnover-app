@@ -86,6 +86,7 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
     Readable.from(req.file.buffer)
       .pipe(csvParser({ headers: false }))
       .on("data", (row) => {
+        console.log("CSV Row:", row);
         const leavers = parseInt(row[1], 10);
         const endCount = parseInt(row[2], 10);
 
@@ -101,6 +102,13 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
         results.push(monthData);
       })
       .on("end", () => {
+        console.log("Parsed Results:", results); // Log the parsed results
+
+        if (results.length === 0) {
+          return res
+            .status(400)
+            .send("No valid data found in the uploaded file.");
+        }
         res.json({
           message: "File uploaded and processed successfully",
           fileUrl,

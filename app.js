@@ -68,13 +68,13 @@ const upload = multer({
 
 // Route for handling file uploads with input validation, Vercel Blob storage, and CSV parsing
 app.post("/upload", upload.single("dataFile"), async (req, res) => {
-  if (!req.file) {
-    console.error("No file uploaded.");
-    return res.status(400).send("No file uploaded.");
-  }
-
   try {
+    if (!req.file) {
+      throw new Error("No file uploaded.");
+    }
+
     console.log("Received file:", req.file.originalname);
+
     // Upload file to Vercel Blob
     const blob = await put(
       `uploads/${Date.now()}_${req.file.originalname}`,
@@ -84,32 +84,30 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
       }
     );
 
-    const fileUrl = blob.url; // The URL to access the uploaded file
-
-    console.log("File uploaded to Vercel Blob, URL:", blob.url);
+    console.log("File uploaded to Vercel Blob:", blob.url);
 
     const results = [];
     Readable.from(req.file.buffer)
-      .pipe(csvParser({ headers: false }))
+      .pipe(csvParser({ headers: false })) // Assuming the CSV doesn't have headers
       .on("data", (row) => {
         console.log("CSV Row:", row);
 
-        const leavers = parseInt(row[1], 10);
-        const endCount = parseInt(row[2], 10);
+        const leavers = parseInt(row[0], 10); // Adjusted to row[0]
+        const endCount = parseInt(row[1], 10); // Adjusted to row[1]
 
         if (isNaN(leavers) || isNaN(endCount)) {
           console.warn(`Skipping invalid row: ${JSON.stringify(row)}`);
-          return; // Skip invalid rows
+          return;
         }
 
         const monthData = {
-          leavers: leavers, // Second column is leavers
-          endCount: endCount, // Third column is endCount
+          leavers,
+          endCount,
         };
         results.push(monthData);
       })
       .on("end", () => {
-        console.log("Parsed Results:", results); // Log the parsed results
+        console.log("Parsed Results:", results);
 
         if (results.length === 0) {
           return res
@@ -119,7 +117,7 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
 
         res.json({
           message: "File uploaded and processed successfully",
-          fileUrl,
+          fileUrl: blob.url,
           results,
         });
       })
@@ -128,15 +126,9 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
         res.status(500).send("Error parsing the file");
       });
   } catch (error) {
-    console.error("Error uploading or processing file:", error);
-    res.status(500).send("File upload failed.");
+    console.error("Error during file upload or processing:", error.message);
+    res.status(500).send("Something broke!");
   }
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
 });
 
 // Start the server

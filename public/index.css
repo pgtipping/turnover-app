@@ -31,6 +31,10 @@ body {
   color: #0056b3; /* Change to desired hover color */
 }
 
+.wd50 {
+  width: 50%;
+}
+
 #dynamicFormContainer {
   margin-top: 70px; /* Add margin to create space between sections */
 }

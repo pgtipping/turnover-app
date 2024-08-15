@@ -93,8 +93,8 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
         console.log("CSV Row:", row);
 
         const month = parseInt(row[0], 10); // The first column is the month (1 to 12)
-        const leavers = parseInt(row[0], 10); // Adjusted to row[0]
-        const endCount = parseInt(row[1], 10); // Adjusted to row[1]
+        const leavers = parseInt(row[1], 10); // The second column is leavers
+        const endCount = parseInt(row[2], 10); // The third column is endCount
 
         if (isNaN(month) || isNaN(leavers) || isNaN(endCount)) {
           console.warn(`Skipping invalid row: ${JSON.stringify(row)}`);

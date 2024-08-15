@@ -144,12 +144,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let previousEndCount = parseInt($("#initialHeadcount").val(), 10); // Use the initial headcount specified by the user and parse it as a number
 
     for (let i = startMonthIndex; i <= endMonthIndex; i++) {
+      // Check if there's uploaded data for this month, else use manual form
       const monthData = data.find((d) => d.month === i + 1); // Find the data for the current month
       const leavers = monthData ? monthData.leavers : 0;
       const endCount = monthData ? monthData.endCount : 0;
 
-      // For the first month, use the initial headcount; for subsequent months, use the ending headcount of the previous month or the uploaded data
-      const beginningCount = previousEndCount;
+      // For manually generated forms, use initial headcount for the first month and adjust dynamically for subsequent months
+      const beginningCount =
+        i === startMonthIndex ? previousEndCount : previousEndCount;
 
       const monthName = new Date(0, i).toLocaleString("en", {
         month: "long",
@@ -161,18 +163,21 @@ document.addEventListener("DOMContentLoaded", function () {
             <label class="form-control-plaintext">${monthName}</label>
         </div>
         <div class="col">
-            <input type="number" class="form-control" placeholder="Beginning Headcount" value="${beginningCount}" readonly>
+            <input type="number" class="form-control" placeholder="Beginning Headcount" value="${beginningCount}" id="employeesBeginning${i}" readonly>
         </div>
         <div class="col">
-            <input type="number" class="form-control" placeholder="Leavers" value="${leavers}">
+            <input type="number" class="form-control" placeholder="Leavers" id="employeesLeft${i}" value="${leavers}">
         </div>
         <div class="col">
-            <input type="number" class="form-control" placeholder="Ending Headcount" value="${endCount}">
+            <input type="number" class="form-control" placeholder="Ending Headcount" id="employeesEnd${i}" value="${endCount}">
         </div>
     </div>`;
 
-      // Update previousEndCount for the next iteration
-      previousEndCount = endCount;
+      // Update the previousEndCount dynamically for the next iteration
+      previousEndCount =
+        endCount ||
+        parseInt($(`#employeesEnd${i}`).val(), 10) ||
+        previousEndCount;
     }
 
     $("#dynamicFormContainer").html(formHtml);

@@ -31,6 +31,18 @@ body {
   color: #0056b3; /* Change to desired hover color */
 }
 
+#dynamicFormContainer {
+  margin-top: 20px; /* Add margin to create space between sections */
+}
+
+.form-row.font-weight-bold {
+  margin-bottom: 10px; /* Space between header and form fields */
+}
+
+.custom-file {
+  margin-bottom: 20px; /* Add space below the upload field */
+}
+
 /* Ensure footer links have appropriate spacing */
 .mx-2 {
   margin-left: 0.5rem !important;

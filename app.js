@@ -92,15 +92,17 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
       .on("data", (row) => {
         console.log("CSV Row:", row);
 
+        const month = parseInt(row[0], 10); // The first column is the month (1 to 12)
         const leavers = parseInt(row[0], 10); // Adjusted to row[0]
         const endCount = parseInt(row[1], 10); // Adjusted to row[1]
 
-        if (isNaN(leavers) || isNaN(endCount)) {
+        if (isNaN(month) || isNaN(leavers) || isNaN(endCount)) {
           console.warn(`Skipping invalid row: ${JSON.stringify(row)}`);
           return;
         }
 
         const monthData = {
+          month,
           leavers,
           endCount,
         };
@@ -131,7 +133,14 @@ app.post("/upload", upload.single("dataFile"), async (req, res) => {
   }
 });
 
+// Error handling middleware with detailed logging
+app.use((err, req, res, next) => {
+  console.error("Error stack:", err.stack); // Log the full error stack
+  console.error("Error message:", err.message); // Log the error message
+  res.status(500).send("Something broke!");
+});
+
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log("Server is running");
 });

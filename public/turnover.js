@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
       $("#fileUploadFields").show();
     }
   });
+
   // Function to populate month dropdowns
   function populateMonthDropdowns() {
     const monthNames = [
@@ -128,53 +129,50 @@ document.addEventListener("DOMContentLoaded", function () {
   function generateFormFields(startMonthIndex, endMonthIndex, data = []) {
     let formHtml = "";
 
+    console.log("Generating form fields with data:", data);
+
     // Fixed header row
     formHtml += `
-<div class="form-row mb-3 font-weight-bold">
-    <div class="col-4">Month</div>
-    <div class="col">Beginning</div>
-    <div class="col">Voluntary Exits</div>
-    <div class="col">End</div>
-</div>
-`;
+    <div class="form-row mb-3 font-weight-bold">
+        <div class="col-4">Month</div>
+        <div class="col">Beginning</div>
+        <div class="col">Voluntary Exits</div>
+        <div class="col">End</div>
+    </div>
+    `;
 
     let previousEndCount = parseInt($("#initialHeadcount").val(), 10); // Use the initial headcount specified by the user and parse it as a number
 
     for (let i = startMonthIndex; i <= endMonthIndex; i++) {
-      const monthName = new Date(0, i % 12).toLocaleString("en", {
+      const monthData = data.find((d) => d.month === i + 1); // Find the data for the current month
+      const leavers = monthData ? monthData.leavers : 0;
+      const endCount = monthData ? monthData.endCount : 0;
+
+      // For the first month, use the initial headcount; for subsequent months, use the ending headcount of the previous month or the uploaded data
+      const beginningCount = previousEndCount;
+
+      const monthName = new Date(0, i).toLocaleString("en", {
         month: "long",
       });
 
-      // Extract data for this month from the uploaded data, if available
-      const monthData = data[i - startMonthIndex]; // Adjust index based on the data order
-      const leavers = monthData ? parseInt(monthData.leavers, 10) : 0; // Parse leavers as integer
-      const endCount = monthData ? parseInt(monthData.endCount, 10) : 0; // Parse endCount as integer
-
-      // For the first month, use the initial headcount; for subsequent months, use the ending headcount of the previous month or the uploaded data
-      const beginningCount =
-        i === startMonthIndex ? previousEndCount : previousEndCount;
-
       formHtml += `
-<div class="form-row mb-3 align-items-end">
-    <div class="col-4">
-        <label class="form-control-plaintext">${monthName}</label>
-    </div>
-    <div class="col">
-        <input type="number" class="form-control" placeholder="Beginning Headcount" value="${beginningCount}" id="employeesBeginning${i}" readonly>
-    </div>
-    <div class="col">
-        <input type="number" class="form-control" placeholder="Leavers" id="employeesLeft${i}" value="${leavers}">
-    </div>
-    <div class="col">
-        <input type="number" class="form-control" placeholder="Ending Headcount" id="employeesEnd${i}" value="${endCount}">
-    </div>
-</div>`;
+    <div class="form-row mb-3 align-items-end">
+        <div class="col-4">
+            <label class="form-control-plaintext">${monthName}</label>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" placeholder="Beginning Headcount" value="${beginningCount}" readonly>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" placeholder="Leavers" value="${leavers}">
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" placeholder="Ending Headcount" value="${endCount}">
+        </div>
+    </div>`;
 
       // Update previousEndCount for the next iteration
-      previousEndCount =
-        endCount ||
-        parseInt($(`#employeesEnd${i}`).val(), 10) ||
-        previousEndCount;
+      previousEndCount = endCount;
     }
 
     $("#dynamicFormContainer").html(formHtml);
@@ -261,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       tableRows += `
                 <tr>
-                    <td>${new Date(0, i % 12).toLocaleString("en", {
+                    <td>${new Date(0, i).toLocaleString("en", {
                       month: "long",
                     })}</td>
                     <td>${monthlyRate.toFixed(2)}%</td>
@@ -287,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let quarterlyRateIndex = 0; // Keep track of which quarterly rate to display
 
       for (let i = startMonthIndex; i <= endMonthIndex; i++) {
-        const monthName = new Date(0, i % 12).toLocaleString("en", {
+        const monthName = new Date(0, i).toLocaleString("en", {
           month: "long",
         });
         const monthlyRate = monthlyRates[i - startMonthIndex].toFixed(2);
@@ -370,7 +368,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // The first page
             const imgData = canvas.toDataURL("image/png");
             let position = 0;
-            console.log(window.jsPDF);
 
             // Add image to PDF
             pdf.addImage(imgData, "PNG", 0, position, 210, imgHeight);
@@ -406,8 +403,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!data || !data.length) return;
 
     // Assume the first data point corresponds to the start month and the last to the end month
-    let startMonthIndex = 0; // Start from the first month in the data
-    let endMonthIndex = data.length - 1; // End with the last month in the data
+    let startMonthIndex = data[0].month - 1; // Start from the first month in the data
+    let endMonthIndex = data[data.length - 1].month - 1; // End with the last month in the data
 
     // Debug logging
     console.log("Start Month from Uploaded Data:", startMonthIndex);
@@ -422,10 +419,6 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     var formData = new FormData(this);
-    // Log the form data being sent
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
 
     $.ajax({
       url: "/upload",
@@ -433,20 +426,27 @@ document.addEventListener("DOMContentLoaded", function () {
       data: formData,
       processData: false,
       contentType: false,
-      success: function (data) {
-        console.log("Upload successful");
-        // Assuming 'data' is an array of objects with 'leavers' and 'endCount' properties
-        // Update the start and end month indexes based on the data length
-        const startMonthIndex = 0; // Adjust based on your data, if needed
-        const endMonthIndex = data.length - 1; // Assuming data is ordered by month
-        console.log(data);
-        // Call generateFormFields with the uploaded data
+      success: function ({ results }) {
+        console.log("Upload successful", results);
+
+        const startMonthIndex = results.length > 0 ? results[0].month - 1 : 0; // Use the month from the first data row
+        const endMonthIndex =
+          results.length > 0 ? results[results.length - 1].month - 1 : 0;
+
+        console.log(
+          "Start Month Index:",
+          startMonthIndex,
+          "End Month Index:",
+          endMonthIndex
+        );
+
+        // Show the form and populate it with the parsed data
         $("#turnoverForm").show();
-        generateFormFields(startMonthIndex, endMonthIndex, data);
-        updateMonthDropdowns(data); // 'processedUploadedData' should be your array of processed data from the file
+        generateFormFields(startMonthIndex, endMonthIndex, results);
+        updateMonthDropdowns(results);
       },
-      error: function () {
-        console.error("Upload error");
+      error: function (xhr, status, error) {
+        console.error("Upload error", error);
       },
     });
   });

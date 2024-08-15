@@ -38,3 +38,60 @@ $("#turnoverForm").on("submit", function (event) {
 
   // Display the quarterly rates...
 });
+
+//Previous generate form field function
+function generateFormFields(startMonthIndex, endMonthIndex, data = []) {
+  let formHtml = "";
+
+  // Ensure the data is being correctly utilized
+  console.log("Generating form fields with data:", data);
+
+  // Fixed header row
+  formHtml += `
+<div class="form-row mb-3 font-weight-bold">
+  <div class="col-4">Month</div>
+  <div class="col">Beginning</div>
+  <div class="col">Voluntary Exits</div>
+  <div class="col">End</div>
+</div>
+`;
+
+  let previousEndCount = parseInt($("#initialHeadcount").val(), 10); // Use the initial headcount specified by the user and parse it as a number
+
+  for (let i = startMonthIndex; i <= endMonthIndex; i++) {
+    const monthName = new Date(0, i % 12).toLocaleString("en", {
+      month: "long",
+    });
+
+    // Extract data for this month from the uploaded data, if available
+    const monthData = data.find((d) => d.month === i + 1); // Find the data for the current month
+    const leavers = monthData ? monthData.leavers : 0;
+    const endCount = monthData ? monthData.endCount : 0;
+
+    // For the first month, use the initial headcount; for subsequent months, use the ending headcount of the previous month or the uploaded data
+    const beginningCount =
+      i === startMonthIndex ? previousEndCount : previousEndCount;
+
+    formHtml += `
+<div class="form-row mb-3 align-items-end">
+  <div class="col-4">
+      <label class="form-control-plaintext">${monthName}</label>
+  </div>
+  <div class="col">
+      <input type="number" class="form-control" placeholder="Beginning Headcount" value="${beginningCount}" id="employeesBeginning${i}" readonly>
+  </div>
+  <div class="col">
+      <input type="number" class="form-control" placeholder="Leavers" id="employeesLeft${i}" value="${leavers}">
+  </div>
+  <div class="col">
+      <input type="number" class="form-control" placeholder="Ending Headcount" id="employeesEnd${i}" value="${endCount}">
+  </div>
+</div>`;
+
+    // Update previousEndCount for the next iteration
+    previousEndCount =
+      endCount ||
+      parseInt($(`#employeesEnd${i}`).val(), 10) ||
+      previousEndCount;
+  }
+}

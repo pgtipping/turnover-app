@@ -36,7 +36,7 @@ body {
 }
 
 #dynamicFormContainer {
-  margin-top: 70px; /* Add margin to create space between sections */
+  margin: 70px 0px; /* Add margin to create space between sections */
 }
 
 .form-row.font-weight-bold {

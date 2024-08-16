@@ -32,7 +32,7 @@ body {
 }
 
 .wd50 {
-  width: 50%;
+  width: 100%;
 }
 
 #dynamicFormContainer {
@@ -47,6 +47,22 @@ body {
   margin-bottom: 20px; /* Add space below the upload field */
 }
 
+.custom-file-label::after {
+  height: autocalc(1.25em + 1.05rem);
+  -webkit-border-radius: 0 0.15rem 0.15rem 0;
+  -moz-border-radius: 0 0.15rem 0.15rem 0;
+  -ms-border-radius: 0 0.15rem 0.15rem 0;
+  -o-border-radius: 0 0.15rem 0.15rem 0;
+  border-radius: 0 0.15rem 0.15rem 0;
+}
+
+.w-75 {
+  width: 75%;
+}
+
+.d-blc {
+  display: block;
+}
 /* Ensure footer links have appropriate spacing */
 .mx-2 {
   margin-left: 0.5rem !important;
@@ -68,6 +84,12 @@ footer .container {
 footer .social-icons {
   display: flex;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .wd50 {
+    max-width: 50%;
+  }
 }
 
 /* Dark Mode Styles 

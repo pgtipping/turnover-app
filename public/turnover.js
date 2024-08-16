@@ -487,9 +487,21 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
     if (chartOptions.quarterlyRates) {
+      // Create an array to hold quarterly rates aligned with the correct months
+      const alignedQuarterlyRates = new Array(labels.length).fill(null);
+      const quarterMonths = [2, 5, 8, 11]; // Indices for March, June, September, December (0-indexed)
+
+      // Place quarterly rates only in the appropriate months
+      quarterMonths.forEach((month, index) => {
+        if (month >= startMonthIndex && month <= endMonthIndex) {
+          alignedQuarterlyRates[month - startMonthIndex] =
+            quarterlyRates[index];
+        }
+      });
+
       datasets.push({
         label: "Quarterly Rates",
-        data: quarterlyRates, // Ensure this is available from your calculations
+        data: alignedQuarterlyRates, // Ensure this is available from your calculations
         borderColor: "green",
         fill: false,
       });

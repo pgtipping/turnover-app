@@ -57,7 +57,7 @@ body {
 }
 
 .w-75 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .d-blc {
@@ -91,7 +91,7 @@ footer .social-icons {
     max-width: 50%;
   }
   .w-75 {
-    width: 75%;
+    width: 50% !important;
   }
 }
 

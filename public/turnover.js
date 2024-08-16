@@ -501,16 +501,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
       datasets.push({
         label: "Quarterly Rates",
-        data: alignedQuarterlyRates, // Ensure this is available from your calculations
+        data: alignedQuarterlyRates,
         borderColor: "green",
         fill: false,
+        spanGaps: true,
+        lineTension: 0, // Optional: keep the line straight without curvature
       });
     }
     // Add other conditions for YTD Rates and Annualized Rates similarly...
     if (chartOptions.ytdRates) {
       datasets.push({
         label: "Year-To-Date Rates",
-        data: ytdRates, // Ensure this is available from your calculations
+        data: ytdRates,
         borderColor: "red",
         fill: false,
       });
@@ -518,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (chartOptions.annualizedRates) {
       datasets.push({
         label: "Annualized Rates",
-        data: annualizedRates, // Ensure this is available from your calculations
+        data: annualizedRates,
         borderColor: "black",
         fill: false,
       });

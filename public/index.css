@@ -48,7 +48,7 @@ body {
 }
 
 .custom-file-label::after {
-  height: autocalc(1.25em + 1.05rem);
+  height: calc(1.25em + 1.05rem);
   -webkit-border-radius: 0 0.15rem 0.15rem 0;
   -moz-border-radius: 0 0.15rem 0.15rem 0;
   -ms-border-radius: 0 0.15rem 0.15rem 0;
@@ -57,7 +57,7 @@ body {
 }
 
 .w-75 {
-  width: 75%;
+  width: 100%;
 }
 
 .d-blc {
@@ -89,6 +89,9 @@ footer .social-icons {
 @media (min-width: 768px) {
   .wd50 {
     max-width: 50%;
+  }
+  .w-75 {
+    width: 75%;
   }
 }
 

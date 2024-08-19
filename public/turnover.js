@@ -489,15 +489,30 @@ document.addEventListener("DOMContentLoaded", function () {
     if (chartOptions.quarterlyRates) {
       // Create an array to hold quarterly rates aligned with the correct months
       const alignedQuarterlyRates = new Array(labels.length).fill(null);
+
+      // Start with a 0 point at the beginning of the range to draw a line from 0
+      alignedQuarterlyRates[0] = 0;
+      // months with valid quarterly rates
       const quarterMonths = [2, 5, 8, 11]; // Indices for March, June, September, December (0-indexed)
 
       // Place quarterly rates only in the appropriate months
       quarterMonths.forEach((month, index) => {
         if (month >= startMonthIndex && month <= endMonthIndex) {
-          alignedQuarterlyRates[month - startMonthIndex] =
-            quarterlyRates[index] !== undefined ? quarterlyRates[index] : null;
+          if (
+            quarterlyRates[index] !== undefined &&
+            quarterlyRates[index] !== null
+          ) {
+            alignedQuarterlyRates[month - startMonthIndex] =
+              quarterlyRates[index];
+          }
         }
       });
+
+      // Remove any trailing null values after the last valid quarterly rate
+      const lastValidIndex = alignedQuarterlyRates.lastIndexOf(
+        (rate) => rate !== null
+      );
+      alignedQuarterlyRates.splice(lastValidIndex + 1);
 
       datasets.push({
         label: "Quarterly Rates",
@@ -506,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fill: false,
         spanGaps: true,
         lineTension: 0, // Optional: keep the line straight without curvature
-        cubicInterpolationMode: "monotone", // Smooths out the line even with minimal data points
+        borderWidth: 2,
       });
     }
     // Add other conditions for YTD Rates and Annualized Rates similarly...

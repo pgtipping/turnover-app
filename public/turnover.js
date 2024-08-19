@@ -492,10 +492,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Start with a 0 point at the beginning of the range to draw a line from 0
       alignedQuarterlyRates[0] = 0;
-      // months with valid quarterly rates
+
+      // Determine which months have valid quarterly rates (e.g., March, June, September, December)
       const quarterMonths = [2, 5, 8, 11]; // Indices for March, June, September, December (0-indexed)
 
-      // Place quarterly rates only in the appropriate months
+      // Place quarterly rates only in the appropriate months based on available data
       quarterMonths.forEach((month, index) => {
         if (month >= startMonthIndex && month <= endMonthIndex) {
           if (
@@ -520,10 +521,11 @@ document.addEventListener("DOMContentLoaded", function () {
         borderColor: "green",
         fill: false,
         spanGaps: true,
-        lineTension: 0, // Optional: keep the line straight without curvature
+        lineTension: 0,
         borderWidth: 2,
       });
     }
+
     // Add other conditions for YTD Rates and Annualized Rates similarly...
     if (chartOptions.ytdRates) {
       datasets.push({

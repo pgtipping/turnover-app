@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", function () {
       quarterMonths.forEach((month, index) => {
         if (month >= startMonthIndex && month <= endMonthIndex) {
           alignedQuarterlyRates[month - startMonthIndex] =
-            quarterlyRates[index];
+            quarterlyRates[index] !== undefined ? quarterlyRates[index] : null;
         }
       });
 
@@ -506,6 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fill: false,
         spanGaps: true,
         lineTension: 0, // Optional: keep the line straight without curvature
+        cubicInterpolationMode: "monotone", // Smooths out the line even with minimal data points
       });
     }
     // Add other conditions for YTD Rates and Annualized Rates similarly...

@@ -517,8 +517,6 @@ document.addEventListener("DOMContentLoaded", function () {
           fill: false,
           spanGaps: true,
           lineTension: 0,
-          borderWidth: 2,
-          pointRadius: 5,
         });
       }
     }

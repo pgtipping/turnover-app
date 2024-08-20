@@ -499,12 +499,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // Place quarterly rates only in the appropriate months based on available data
       quarterMonths.forEach((month, index) => {
         if (month >= startMonthIndex && month <= endMonthIndex) {
-          if (
-            quarterlyRates[index] !== undefined &&
-            quarterlyRates[index] !== null
-          ) {
-            alignedQuarterlyRates[month - startMonthIndex] =
-              quarterlyRates[index];
+          const rate = quarterlyRates[index];
+          if (rate !== undefined && rate !== null) {
+            alignedQuarterlyRates[month - startMonthIndex] = rate;
           }
         }
       });
@@ -523,6 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
         spanGaps: true,
         lineTension: 0,
         borderWidth: 2,
+        pointRadius: 5, // Increase visibility of points
       });
     }
 

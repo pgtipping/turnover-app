@@ -490,38 +490,37 @@ document.addEventListener("DOMContentLoaded", function () {
       // Create an array to hold quarterly rates aligned with the correct months
       const alignedQuarterlyRates = new Array(labels.length).fill(null);
 
-      // Start with a 0 point at the beginning of the range to draw a line from 0
+      // Insert a 0 at the start to ensure the line starts at zero
       alignedQuarterlyRates[0] = 0;
 
       // Determine which months have valid quarterly rates (e.g., March, June, September, December)
       const quarterMonths = [2, 5, 8, 11]; // Indices for March, June, September, December (0-indexed)
 
-      // Place quarterly rates only in the appropriate months based on available data
-      quarterMonths.forEach((month, index) => {
+      // Add the valid quarterly rate at the correct position (e.g., March)
+      for (let i = 0; i < quarterMonths.length; i++) {
+        const month = quarterMonths[i];
         if (month >= startMonthIndex && month <= endMonthIndex) {
-          const rate = quarterlyRates[index];
-          if (rate !== undefined && rate !== null) {
-            alignedQuarterlyRates[month - startMonthIndex] = rate;
-          }
+          alignedQuarterlyRates[month - startMonthIndex] = quarterlyRates[i];
         }
-      });
+      }
 
-      // Remove any trailing null values after the last valid quarterly rate
-      const lastValidIndex = alignedQuarterlyRates.lastIndexOf(
+      // Check if there’s a valid quarterly rate and ensure the chart is populated
+      const validQuarterlyRates = alignedQuarterlyRates.filter(
         (rate) => rate !== null
       );
-      alignedQuarterlyRates.splice(lastValidIndex + 1);
 
-      datasets.push({
-        label: "Quarterly Rates",
-        data: alignedQuarterlyRates,
-        borderColor: "green",
-        fill: false,
-        spanGaps: true,
-        lineTension: 0,
-        borderWidth: 2,
-        pointRadius: 5, // Increase visibility of points
-      });
+      if (validQuarterlyRates.length > 1) {
+        datasets.push({
+          label: "Quarterly Rates",
+          data: alignedQuarterlyRates,
+          borderColor: "green",
+          fill: false,
+          spanGaps: true,
+          lineTension: 0,
+          borderWidth: 2,
+          pointRadius: 5,
+        });
+      }
     }
 
     // Add other conditions for YTD Rates and Annualized Rates similarly...

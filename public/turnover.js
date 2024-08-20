@@ -120,6 +120,11 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#turnoverForm").show();
     generateFormFields(startMonthIndex, endMonthIndex); //Call the updated function to generate form fields
 
+    // Smooth scroll to the form
+    document
+      .getElementById("turnoverForm")
+      .scrollIntoView({ behavior: "smooth" });
+
     setTimeout(function () {
       // Timeout to ensure dynamic elements are loaded
       $('[data-toggle="tooltip"]').tooltip(); // Reinitialize tooltips for dynamic elements
@@ -324,6 +329,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Make sure the table is visible
       $("#turnoverRatesTable").show();
+
+      // Smooth scroll to the data table
+      document
+        .getElementById("turnoverRatesTable")
+        .scrollIntoView({ behavior: "smooth" });
     }
     // Display the calculated rates in the table
     displayRates(

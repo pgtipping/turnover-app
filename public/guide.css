@@ -91,13 +91,14 @@ footer {
   }
 }
 
-/* Apply the variables to elements */
-.nav-link {
-  color: var(--link-color);
+/*Apply the variables to elements */
+
+.navbar-nav .nav-link {
+  color: var(--link-color) !important;
 }
 
-.nav-link:hover {
-  color: var(--link-hover-color);
+.navbar-nav .nav-link:hover {
+  color: var(--link-hover-color) !important;
 }
 
 .btn-info {
@@ -109,15 +110,15 @@ footer {
   background-color: var(--button-hover-bg-color);
 }
 
-.footer {
-  background-color: var(--footer-bg-color);
-  color: var(--footer-text-color);
+.footer .p-3 {
+  background-color: var(--footer-bg-color) !important;
+  color: var(--footer-text-color) !important;
 }
 
 .footer a {
-  color: var(--link-hover-color);
+  color: var(--link-hover-color) !important;
 }
 
 .footer a:hover {
-  color: #bdbdbd;
+  color: #bdbdbd !important;
 }

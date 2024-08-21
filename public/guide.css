@@ -111,8 +111,8 @@ footer {
   background-color: var(--button-hover-bg-color);
 }
 
-.footer .p-3 {
-  background-color: var(--footer-bg-color) !important;
+.footer,
+.p-3 {
   color: var(--footer-text-color) !important;
 }
 

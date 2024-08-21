@@ -95,6 +95,23 @@ footer .social-icons {
   }
 }
 
+/* Increase the size of the checkboxes */
+input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px; /* Add space between the checkbox and its label */
+}
+
+/* Ensure sufficient spacing around each checkbox and its label */
+.form-check {
+  margin-bottom: 16px; /* Add spacing between checkboxes to meet the accessibility guidelines */
+}
+
+/* Optional: Add padding around the checkbox for better touch target area */
+.form-check-input {
+  padding: 5px;
+}
+
 /* Dark Mode Styles 
 body {
   transition: background-color 0.3s, color 0.3s;

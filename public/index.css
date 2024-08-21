@@ -7,15 +7,6 @@ body {
   display: none;
 }
 
-/* Navbar link color for accessibility */
-.navbar-nav .nav-link {
-  color: #0056b3 !important; /* Ensure high contrast color */
-}
-
-.navbar-nav .nav-link:hover {
-  color: #003d99 !important; /* Darker shade for hover */
-}
-
 /* Social Media Icons */
 .social-icon {
   font-size: 20px;
@@ -112,48 +103,55 @@ input[type="checkbox"] {
   padding: 5px;
 }
 
-/* Dark Mode Styles 
-body {
-  transition: background-color 0.3s, color 0.3s;
+:root {
+  /* Light Mode Variables */
+  --link-color: #0056b3;
+  --link-hover-color: #003a75;
+  --button-bg-color: #2384c6;
+  --button-hover-bg-color: #1c6aa1;
+  --footer-bg-color: #adb5bd;
+  --footer-text-color: #333333;
 }
 
-.dark-theme {
-  background-color: #212529;
-  color: #ffffffe2;
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Variables */
+    --link-color: #ffffff;
+    --link-hover-color: #d4d4d4;
+    --button-bg-color: #1d73a3;
+    --button-hover-bg-color: #166285;
+    --footer-bg-color: #343a40;
+    --footer-text-color: #ffffff;
+  }
 }
 
-.light-theme {
-  background-color: #ffffff;
-  color: #000000;
+/* Apply the variables to elements */
+.nav-link {
+  color: var(--link-color);
 }
 
-.dark-theme .navbar,
-.dark-theme .footer {
-  background-color: #1f1f1fdc;
+.nav-link:hover {
+  color: var(--link-hover-color);
 }
 
-.light-theme .navbar,
-.light-theme .footer {
-  background-color: #f8f9fae5;
+.btn-info {
+  background-color: var(--button-bg-color);
+  color: #ffffff; /* Ensure white text */
 }
 
-.dark-theme .navbar .navbar-brand,
-.dark-theme .navbar .nav-link {
-  color: #ffffff !important;
+.btn-info:hover {
+  background-color: var(--button-hover-bg-color);
 }
 
-.light-theme .navbar .navbar-brand,
-.light-theme .navbar .nav-link {
-  color: #000000 !important;
+.footer {
+  background-color: var(--footer-bg-color);
+  color: var(--footer-text-color);
 }
 
-.dark-theme .social-icon,
-.light-theme .social-icon {
-  color: inherit; 
+.footer a {
+  color: var(--link-hover-color);
 }
 
-.dark-theme .social-icon:hover,
-.light-theme .social-icon:hover {
-  color: #007bff;  
+.footer a:hover {
+  color: #bdbdbd;
 }
-*/

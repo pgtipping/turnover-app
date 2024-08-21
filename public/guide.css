@@ -2,14 +2,6 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.navbar-nav .nav-link {
-  color: #0056b3 !important; /* Ensure high contrast color */
-}
-
-.navbar .nav-link:hover {
-  color: #003d99 !important;
-}
-
 /* Limit the width of the main content and center it */
 main.container {
   max-width: 800px; /* Adjust the width as needed */
@@ -75,4 +67,57 @@ footer .social-icons {
 footer {
   margin-top: 40px; /* Add space above the footer */
   padding-top: 20px; /* Add padding to the top of the footer */
+}
+
+:root {
+  /* Light Mode Variables */
+  --link-color: #0056b3;
+  --link-hover-color: #003a75;
+  --button-bg-color: #2384c6;
+  --button-hover-bg-color: #1c6aa1;
+  --footer-bg-color: #adb5bd;
+  --footer-text-color: #333333;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Variables */
+    --link-color: #ffffff;
+    --link-hover-color: #d4d4d4;
+    --button-bg-color: #1d73a3;
+    --button-hover-bg-color: #166285;
+    --footer-bg-color: #343a40;
+    --footer-text-color: #ffffff;
+  }
+}
+
+/* Apply the variables to elements */
+.nav-link {
+  color: var(--link-color);
+}
+
+.nav-link:hover {
+  color: var(--link-hover-color);
+}
+
+.btn-info {
+  background-color: var(--button-bg-color);
+  color: #ffffff; /* Ensure white text */
+}
+
+.btn-info:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+.footer {
+  background-color: var(--footer-bg-color);
+  color: var(--footer-text-color);
+}
+
+.footer a {
+  color: var(--link-hover-color);
+}
+
+.footer a:hover {
+  color: #bdbdbd;
 }

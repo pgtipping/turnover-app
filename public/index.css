@@ -116,12 +116,12 @@ input[type="checkbox"] {
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Variables */
-    --link-color: #ffffff;
-    --link-hover-color: #d4d4d4;
-    --button-bg-color: #1d73a3;
-    --button-hover-bg-color: #166285;
+    --link-color: #000000;
+    --link-hover-color: #480101;
+    --button-bg-color: #0a496b;
+    --button-hover-bg-color: #032d41;
     --footer-bg-color: #343a40;
-    --footer-text-color: #ffffff;
+    --footer-text-color: #000000;
   }
 }
 

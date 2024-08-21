@@ -152,7 +152,8 @@ input[type="checkbox"] {
   background-color: var(--button-hover-bg-color);
 }
 
-.footer .p-3 {
+.footer,
+.p-3 {
   background-color: var(--footer-bg-color) !important;
   color: var(--footer-text-color) !important;
 }

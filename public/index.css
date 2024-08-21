@@ -103,12 +103,12 @@ input[type="checkbox"] {
 .form-check-input {
   width: 24px;
   height: 24px;
-  margin-right: 10px; /* Add space between the checkbox and the label */
 }
 
 .form-check-label {
   margin-bottom: 0; /* Remove default bottom margin */
   font-size: 16px; /* Adjust the font size for readability */
+  margin-left: 10px; /* Add space between the checkbox and the label */
 }
 
 :root {

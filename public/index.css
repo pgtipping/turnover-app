@@ -93,14 +93,22 @@ input[type="checkbox"] {
   margin-right: 10px; /* Add space between the checkbox and its label */
 }
 
-/* Ensure sufficient spacing around each checkbox and its label */
+/* Ensure checkboxes and labels are aligned */
 .form-check {
-  margin-bottom: 16px; /* Add spacing between checkboxes to meet the accessibility guidelines */
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  margin-bottom: 16px; /* Maintain sufficient spacing between checkboxes */
 }
 
-/* Optional: Add padding around the checkbox for better touch target area */
 .form-check-input {
-  padding: 5px;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px; /* Add space between the checkbox and the label */
+}
+
+.form-check-label {
+  margin-bottom: 0; /* Remove default bottom margin */
+  font-size: 16px; /* Adjust the font size for readability */
 }
 
 :root {
@@ -137,6 +145,7 @@ input[type="checkbox"] {
 .btn-info {
   background-color: var(--button-bg-color);
   color: #fff; /* Ensure white text */
+  border-color: var(--button-bg-color);
 }
 
 .btn-info:hover {
@@ -150,6 +159,16 @@ input[type="checkbox"] {
 
 .btn-primary:hover {
   background-color: var(--button-hover-bg-color);
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #ca1905;
+  border-color: #ca1905;
+}
+
+.btn-danger:hover {
+  background-color: #861104;
 }
 
 .footer,

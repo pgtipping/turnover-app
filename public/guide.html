@@ -50,65 +50,58 @@
     </header>
 
     <main class="container mt-5">
-      <h1>Guide to Using the Employee Turnover Calculator</h1>
+      <h2>Guide to Using the Employee Turnover Calculator</h2>
       <p>
-        Welcome to the guide for the Employee Turnover Calculator. This tool
-        helps you calculate and analyze employee turnover rates over any given
-        period, with monthly data on number of voluntary exits and total
-        employees at the end of each month.
+        Welcome! The employee turnover calculator allows you to calculate and
+        analyze employee turnover rates over a selected period, using monthly
+        data on voluntary exits and end-of-month headcounts.
       </p>
-      <p>
-        Before using the app, ensure you have the initial or starting headcount
-        for the start month (i.e., total number of employees in the first month
-        of the period which you intend to calculate employee turnover), and
-        monthly employee data for total exits and headcount at monthend.
-      </p>
-      <h2>How to Use the Calculator</h2>
-      <p>To use the calculator, follow these steps:</p>
 
+      <p>This guide explains how to use the calculator.</p>
+
+      <p>
+        Before using the app, ensure you have the starting headcount for the
+        first month and monthly data for total exits and month-end headcounts.
+      </p>
+      <h3>How to Use the Calculator</h3>
+      <h4>Manual Data Entry</h4>
+      <ol>
+        <li>Enter the initial headcount for the start month.</li>
+        <li>Choose a data entry method: manual or CSV upload.</li>
+        <li>Select the start and end months for your analysis period.</li>
+        <li>
+          Click "Generate Form" to display a form with columns for Month,
+          Beginning (prepopulated), Voluntary Exits, and End.
+        </li>
+        <li>
+          Enter the number of exits and the ending headcount for each month. The
+          beginning headcount for the next month updates automatically.
+        </li>
+      </ol>
+      <h4>CSV File Upload</h4>
+      <ol>
+        <li>Enter the initial headcount for the start month.</li>
+        <li>Choose "CSV Upload" as the data entry method.</li>
+        <li>
+          Prepare a CSV file with the following columns, with no headers: Month
+          (as a number from 1 to 12), Voluntary Exits, and End Headcount.
+        </li>
+        <li>Click "Choose File" to upload your CSV.</li>
+        <li>Click "Upload File" to import the data into the form.</li>
+      </ol>
+      <h4>Other Steps: Manual Entry and CSV Upload</h4>
       <ol>
         <li>
-          Enter the initial headcount for the start month in the "Initial
-          Headcount" field.
-        </li>
-        <li>Select the data entry method (manual or CSV upload).</li>
-        <li>
-          Select a start month (representing the beginning period) and an end
-          month (representing the end of the period).
+          Select your chart options: monthly rates, quarterly rates, YTD rates,
+          or annualized rates.
         </li>
         <li>
-          Click on the generate form button. This displays a form with four
-          columns, Month, Beginning (prepopulated with your initial headcount
-          and auto updates as you enter the ending headcount), Voluntary Exits,
-          and End (representing ending headcount), for each month. The form is
-          populated with all the months representing your selected period from
-          the start month to the end month.
-        </li>
-
-        <li>Enter the number of exits in the "Voluntary Exits" field.</li>
-        <li>
-          Enter the headcount at monthend in the "End" field. The beginning
-          headcount for the next month dynamically updates to the previous
-          month's ending headcount.
+          Click "Submit" to view the calculated rates, a chart, and the option
+          to generate a PDF.
         </li>
         <li>
-          Repeat steps 5 and 6 for each month in the period you wish to analyze.
-        </li>
-        <li>
-          Select your preferred data for the chart visualization. Options are
-          monthly rates, quarterly rates, year-to-date (YTD) rates, and
-          annualized rates.
-        </li>
-        <li>
-          Click the "Submit" button to generate the employee turnover rate for
-          each month. A table with the calculated rates, a chart visualization
-          based on selected data, and a generate pdf button will appear below
-          the submit button.
-        </li>
-        <li>
-          Click the "Generate PDF" button to download a PDF report of the entire
-          page including calculated rates and chart visualization. The generated
-          pdf is automatically saved to your default download folder.
+          Click "Generate PDF" to download the entire page with the turnover
+          data table, calculated rates, and chart visualization.
         </li>
       </ol>
       <!-- Add more content as needed -->

@@ -109,6 +109,7 @@ input[type="checkbox"] {
   margin-bottom: 0; /* Remove default bottom margin */
   font-size: 16px; /* Adjust the font size for readability */
   margin-left: 10px; /* Add space between the checkbox and the label */
+  margin-top: 5px;
 }
 
 :root {
